@@ -1,5 +1,5 @@
 import React from 'react';
-import SidebarAdmin from '@/app/components/SidebarAdmin';
+import SidebarAdmin from '@/Front/app/components/SidebarAdmin';
 
 export default function AdminDashboardLayout({
   children,

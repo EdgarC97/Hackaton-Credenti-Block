@@ -1,8 +1,8 @@
-import User from "@/app/lib/models/user";
-import { loginSchema } from "@/app/lib/zod";
+import User from "@/Front/app/lib/models/user";
+import { loginSchema } from "@/Front/app/lib/zod";
 import { NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import { signJwtAccessToken } from "@/app/lib/jwt";
+import { signJwtAccessToken } from "@/Front/app/lib/jwt";
 
 export async function POST(req: Request) {
   try {

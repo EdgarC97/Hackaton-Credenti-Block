@@ -1,5 +1,5 @@
 import React from "react";
-import RegisterForm from "@/app/components/RegisterForm";
+import RegisterForm from "@/Front/app/components/RegisterForm";
 
 export const metadata = {
   title: "Login",
