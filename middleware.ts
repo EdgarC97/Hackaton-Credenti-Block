@@ -5,6 +5,9 @@ export async function middleware(request: NextRequest) {
     const token = request.cookies.get("accessToken")?.value;
     const { pathname } = request.nextUrl;
   
+    console.log("Token:", token);
+    console.log("Pathname:", pathname);
+  
     if (token) {
       const decoded = await verifyJwt(token);
   

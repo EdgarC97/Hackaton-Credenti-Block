@@ -1,8 +1,7 @@
 "use client"
 
 import React, { useState } from 'react';
-import Link from 'next/link';
-import { FileText, Search, Menu, X } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import ButtonLogout from './ButtonLogout';
 
 const SidebarUser = () => {

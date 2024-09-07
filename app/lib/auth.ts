@@ -10,3 +10,4 @@ export const isAuthenticated = (): boolean => {
   const token = getToken();
   return Boolean(token); //Retorna true si existe un token
 }
+
