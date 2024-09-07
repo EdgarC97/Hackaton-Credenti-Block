@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const MONGODB_URI = process.env.MONGODB_URI;
+const MONGODB_URL = process.env.MONGODB_URL;
 
 const connect = async () => {
   const connectionState = mongoose.connection.readyState;
@@ -16,7 +16,7 @@ const connect = async () => {
   }
 
   try {
-    mongoose.connect(MONGODB_URI!, {
+    mongoose.connect(MONGODB_URL!, {
       dbName: "next14restapi",
       bufferCommands: true,
     });

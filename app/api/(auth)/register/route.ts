@@ -5,10 +5,9 @@ import bcrypt from "bcrypt";
 import { registerSchema } from "@/app/lib/zod";
 
 
-connect();
-
 export async function POST(request: Request) {
     try {
+      await connect();
       const body = await request.json();
       const { email, password, name, walletHash, role } = registerSchema.parse(body);
   
