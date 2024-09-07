@@ -37,7 +37,7 @@ const LoginForm: React.FC = () => {
           email: "",
           password: "",
         });
-        router.push("/dashboard");
+        router.push("/dashboard/admin");
       } else {
         const errorData = await response.json();
         console.log("Error en login", errorData);
