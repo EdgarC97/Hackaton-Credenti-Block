@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { FileText, Search, Menu, X } from 'lucide-react';
+import { FileText, Search, Menu, X, UserRoundPen } from 'lucide-react';
 import ButtonLogout from './ButtonLogout';
 
 const SidebarAdmin = () => {
@@ -42,6 +42,14 @@ const SidebarAdmin = () => {
             <Link href="/dashboard/crear-certificado" className="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition duration-300">
               <FileText className="mr-3" size={20} />
               Crear Certificado
+            </Link>
+            <Link href="/dashboard/crear-certificado" className="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition duration-300">
+              <FileText className="mr-3" size={20} />
+              Ver Empleados
+            </Link>
+            <Link href="/dashboard/admin/employee" className="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition duration-300">
+              <UserRoundPen className="mr-3" size={20} />
+              Crear Empleado
             </Link>
             <Link href="/dashboard/buscar-certificado" className="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition duration-300">
               <Search className="mr-3" size={20} />

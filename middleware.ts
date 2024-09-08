@@ -14,7 +14,7 @@ export async function middleware(request: NextRequest) {
       if (decoded) {
         if (pathname.startsWith("/login") || pathname.startsWith("/register")) {
           console.log("Usuario autenticado, redirigiendo a /dashboard");
-          return NextResponse.redirect(new URL("/dashboard", request.url));
+          return NextResponse.redirect(new URL("/dashboard/admin", request.url));
         }
       } else {
         console.log("Token inválido o expirado, redirigiendo a /login");

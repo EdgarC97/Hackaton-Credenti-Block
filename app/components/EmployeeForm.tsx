@@ -1,18 +1,16 @@
 "use client";
 
 import React, { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { registerSchema } from "../lib/zod";
 
-const RegisterForm: React.FC = () => {
-    const [formData, setFormData] = useState({
-        email: '',
-        password: '',
-        name: '',
-        walletHash: '',
-      });
-  const [showPassword, setShowPassword] = useState(false);
+const EmployeeForm: React.FC = () => {
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    address: '',
+  });
+  const [errorMessage, setErrorMessage] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -21,31 +19,42 @@ const RegisterForm: React.FC = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrorMessage("");
+    setSuccessMessage("");
+
     try {
-      registerSchema.parse({ ...formData });
-      const response = await fetch("/api/register", {
+      const response = await fetch("/api/employee", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...formData }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData), // Convertimos el formulario a JSON
       });
-      if (response.ok) {
-        console.log("Registro exitoso");
-        router.push("/login");
-      } else {
+
+      if (!response.ok) {
+        // Si la respuesta no es exitosa, muestra el error
         const errorData = await response.json();
-        console.log("Error en login", errorData);
+        setErrorMessage(errorData.error || "Failed to create employee");
+        return;
       }
+
+      const data = await response.json();
+      setSuccessMessage("Employee created successfully" + data);
+
+      // Redirecciona si quieres enviar al usuario a otra página
+      router.push("/dashboard/all-employees");
     } catch (error) {
-      console.log("Error desconocido: ", error);
+      console.error("Error submitting form:", error);
+      setErrorMessage("Server error");
     }
   };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-900 py-12 px-4 sm:px-6 lg:px-8">
-      
+      <div className="max-w-md w-full space-y-8">
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-white">
-            Crear una cuenta
+            Crear Empleado
           </h2>
         </div>
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -75,51 +84,24 @@ const RegisterForm: React.FC = () => {
                 type="email"
                 autoComplete="email"
                 required
-               className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
+                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
                 placeholder="Correo electrónico"
                 value={formData.email}
                 onChange={handleChange}
               />
             </div>
-            <div className="relative">
-              <label htmlFor="password" className="sr-only">
-                Contraseña
-              </label>
-              <input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                autoComplete="new-password"
-                required
-                className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
-                placeholder="Contraseña"
-                value={formData.password}
-                onChange={handleChange}
-              />
-              <button
-                type="button"
-                className="absolute inset-y-0 right-0 pr-3 flex items-center"
-                onClick={() => setShowPassword(!showPassword)}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-5 w-5 text-gray-400" />
-                ) : (
-                  <Eye className="h-5 w-5 text-gray-400" />
-                )}
-              </button>
-            </div>
             <div>
-              <label htmlFor="walletHash" className="sr-only">
+              <label htmlFor="address" className="sr-only">
                 Dirección de wallet
               </label>
               <input
-                id="walletHash"
-                name="walletHash"
+                id="address"
+                name="address"
                 type="text"
                 required
                 className="appearance-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-md focus:outline-none focus:ring-purple-500 focus:border-purple-500 focus:z-10 sm:text-sm"
                 placeholder="Dirección de wallet"
-                value={formData.walletHash}
+                value={formData.address}
                 onChange={handleChange}
               />
             </div>
@@ -130,13 +112,15 @@ const RegisterForm: React.FC = () => {
               type="submit"
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-purple-600 hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500 transition duration-300"
             >
-              Registrarse
+              Crear
             </button>
           </div>
+          {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+          {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
         </form>
-
+      </div>
     </div>
   );
 };
 
-export default RegisterForm;
+export default EmployeeForm;

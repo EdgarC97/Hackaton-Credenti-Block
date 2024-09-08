@@ -19,8 +19,14 @@ export async function POST(req: Request) {
       );
     }
 
-    const { password: _, ...userWithoutPass } = existingUser;
-    const accessToken = signJwtAccessToken(userWithoutPass);
+    // const { password: _, ...userWithoutPass } = existingUser;
+    // const accessToken = signJwtAccessToken(userWithoutPass);
+
+     // Crear el payload para el JWT con el _id y el role
+     const accessToken = signJwtAccessToken({
+      _id: existingUser._id,
+      role: existingUser.role,  // Incluir el rol si lo necesitas
+    });
 
     // const response = NextResponse.json({ message: "Login successful" });
     const response = NextResponse.json({
