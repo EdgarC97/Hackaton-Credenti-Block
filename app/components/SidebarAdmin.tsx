@@ -1,14 +1,34 @@
 "use client"
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { FileText, Search, Menu, X, UserRoundPen } from 'lucide-react';
+import { FileText, Search, Menu, X, UserRoundPen, FileBadge } from 'lucide-react';
 import ButtonLogout from './ButtonLogout';
 
 const SidebarAdmin = () => {
   const [isOpen, setIsOpen] = useState(false);
-
+  const [userName, setUserName] = useState('');
   const toggleSidebar = () => setIsOpen(!isOpen);
+
+  useEffect(() => {
+    const fetchUserName = async () => {
+      try {
+        const response = await fetch('/api/login', {
+          credentials: 'include' // Esto asegura que las cookies se envíen con la solicitud
+        });
+        if (!response.ok) {
+          throw new Error('Failed to fetch user data');
+        }
+        const data = await response.json();
+        setUserName(data.name); // Asumiendo que el campo se llama 'name' en tu modelo de usuario
+      } catch (error) {
+        console.error('Error fetching user name:', error);
+        setUserName('Usuario');
+      }
+    };
+
+    fetchUserName();
+  }, []);
 
   return (
     <>
@@ -33,9 +53,11 @@ const SidebarAdmin = () => {
         <div className="flex flex-col h-full w-64 bg-gray-900 text-white">
           <div className="flex flex-col items-center mt-8 mb-8">
             <div className="w-24 h-24 rounded-full bg-purple-600 flex items-center justify-center overflow-hidden">
-              <span className="text-3xl font-bold">AV</span>
+              <span className="text-3xl font-bold">
+              {userName.split(' ').map(name => name[0]).join('').toUpperCase()}
+              </span>
             </div>
-            <h2 className="mt-4 text-xl font-semibold">Nombre Usuario</h2>
+            <h2 className="mt-4 text-xl font-semibold">{userName}</h2>
           </div>
           
           <nav className="flex-1">
@@ -43,8 +65,8 @@ const SidebarAdmin = () => {
               <FileText className="mr-3" size={20} />
               Crear Certificado
             </Link>
-            <Link href="/dashboard/crear-certificado" className="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition duration-300">
-              <FileText className="mr-3" size={20} />
+            <Link href="/dashboard/admin/all-employees" className="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition duration-300">
+              <FileBadge className="mr-3" size={20} />
               Ver Empleados
             </Link>
             <Link href="/dashboard/admin/employee" className="flex items-center px-6 py-3 text-gray-300 hover:bg-gray-800 hover:text-white transition duration-300">

@@ -1,8 +1,8 @@
 import User from "@/app/lib/models/user";
 import { loginSchema } from "@/app/lib/zod";
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcrypt";
-import { signJwtAccessToken } from "@/app/lib/jwt";
+import { signJwtAccessToken, verifyJwt } from "@/app/lib/jwt";
 
 export async function POST(req: Request) {
   try {
@@ -46,5 +46,35 @@ export async function POST(req: Request) {
     return response;
   } catch (error) {
     return NextResponse.json({ error: "Data invalid" }, { status: 400 });
+  }
+}
+
+export async function GET(req: NextRequest) {
+  try {
+    // Obtener el token de las cookies
+    const token = req.cookies.get("accessToken")?.value;
+
+    if (!token) {
+      return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+    }
+
+    // Verificar el token JWT
+    const decoded = await verifyJwt(token);
+    if (!decoded) {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
+
+    // Buscar el usuario en la base de datos
+    const user = await User.findById(decoded._id).select('-password');
+
+    if (!user) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    // Devolver la información del usuario
+    return NextResponse.json(user);
+  } catch (error) {
+    console.error("Error fetching user:", error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }

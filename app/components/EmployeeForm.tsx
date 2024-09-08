@@ -42,7 +42,7 @@ const EmployeeForm: React.FC = () => {
       setSuccessMessage("Employee created successfully" + data);
 
       // Redirecciona si quieres enviar al usuario a otra página
-      router.push("/dashboard/all-employees");
+      router.push("/dashboard/admin/all-employees");
     } catch (error) {
       console.error("Error submitting form:", error);
       setErrorMessage("Server error");

@@ -50,3 +50,32 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
+
+
+export async function GET(req: NextRequest) {
+  try {
+    // Obtener el token de las cookies
+    const token = req.cookies.get("accessToken")?.value;
+
+    if (!token) {
+      return NextResponse.json({ error: "Authentication required" }, { status: 401 });
+    }
+
+    // Verificar el token JWT y obtener los datos del usuario
+    const decoded = await verifyJwt(token);
+    if (!decoded) {
+      return NextResponse.json({ error: "Invalid token" }, { status: 401 });
+    }
+
+    const userId = decoded._id; // Obtener el ID del usuario del token decodificado
+
+    // Buscar todos los empleados asociados al userId
+    const employees = await Employee.find({ user: userId });
+
+    return NextResponse.json({ employees }, { status: 200 });
+  } catch (error) {
+    console.error("Error fetching employees:", error);
+    return NextResponse.json({ error: "Server error" }, { status: 500 });
+  }
+}
+
