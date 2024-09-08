@@ -2,7 +2,7 @@ import React from "react";
 import RegisterForm from "@/app/components/RegisterForm";
 
 export const metadata = {
-  title: "Login",
+  title: "Register",
 };
 
 export default function LoginPage() {

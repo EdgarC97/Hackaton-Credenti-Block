@@ -1,5 +1,9 @@
 import React from 'react';
 
+export const metadata = {
+  title: "Dashboard User",
+};
+
 export default function UserDashboard() {
   return (
     <div className="space-y-6">

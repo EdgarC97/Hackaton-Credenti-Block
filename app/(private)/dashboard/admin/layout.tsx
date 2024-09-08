@@ -1,6 +1,10 @@
 import React from 'react';
 import SidebarAdmin from '@/app/components/SidebarAdmin';
 
+export const metadata = {
+  title: "Dashboard Admin",
+};
+
 export default function AdminDashboardLayout({
   children,
 }: {

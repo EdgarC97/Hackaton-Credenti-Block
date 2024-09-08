@@ -13,7 +13,7 @@ const Navbar = () => {
           <div className="flex items-center">
             <div className="flex-shrink-0">
               {/* Reemplaza esto con tu logo */}
-              <span className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">LOGO</span>
+              <Link href="/" className="text-2xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-purple-400 to-pink-600">CredentiBlock</Link>
             </div>
           </div>
           <div className="hidden md:block">

@@ -12,6 +12,7 @@ const LoginForm: React.FC = () => {
     password: "",
   });
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState<string | null>(null); 
   const router = useRouter();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,10 +41,10 @@ const LoginForm: React.FC = () => {
         router.push("/dashboard/admin");
       } else {
         const errorData = await response.json();
-        console.log("Error en login", errorData);
+        setError(errorData.message || "Error en login");
       }
     } catch (error) {
-      console.log("Error desconocido: ", error);
+      setError("Error desconocido: " + (error as Error).message);
     }
   };
 
@@ -101,7 +102,11 @@ const LoginForm: React.FC = () => {
               </button>
             </div>
           </div>
-
+          {error && (
+            <div className="text-red-500 text-sm mt-4">
+              {error}
+            </div>
+          )}
           <div>
             <button
               type="submit"
